@@ -131,6 +131,7 @@ class Shiyida
 	//传入分类的名字，页码，每页数量，获取帖子详情，返回JSON
 	public function getPostsByCateNameToPage($classification,$page,$perpage){
 		$postsId = $this->getPostsIdByCateName($classification,$page,$perpage);
+		//得到该分类帖子的数量
 		$count = count($postsId);
 		$results = null;
 		for($i=0;$i<$count;$i++){
@@ -170,6 +171,50 @@ class Shiyida
 		return $postsId;
 	}
 	
+	//传入帖子的代号和页码，每页数量，返回回复的代号数组
+	public function getReplyIdByPostId($post_id,$page,$perpage){
+		//根据帖子代号获得所有回复ID
+		$all_replies_id = $this->redis->zRange("tid:".$post_id.":posts",0,-1);
+		$result = $this->getStartAndEnd(count($all_replies_id),$page,$perpage);
+		if(!($result[0]==0&&$result[1]==0)){
+			$replies_id = $this->redis->zRange("tid:".$post_id.":posts",$result[0],$result[1]);
+			return $replies_id;
+		}else{
+			return null;
+		}
+	}
+	
+	//传入帖子的代号和页码，每页数量，返回回复的详情
+	public function getReplyByPostId($post_id,$page,$perpage){
+		$replies_id = $this->getReplyIdByPostId($post_id,$page,$perpage);
+		$count = count($replies_id);
+		$results = null;
+		for($i=0;$i<$count;$i++){
+			//回复的代号
+			$pid = $this->redis->hget("post:".$replies_id[$i],"pid");
+			//回复内容
+			$content = $this->redis->hget("post:".$replies_id[$i],"content");
+			//发布时间，时间戳
+			$timestamp = $this->redis->hget("post:".$replies_id[$i],"timestamp");
+			//点赞个数
+			$votes = $this->redis->hget("post:".$replies_id[$i],"votes");
+			//用户ID
+			$uid = $this->redis->hget("post:".$replies_id[$i],"uid");
+			//用户头像
+			$picture = $this->redis->hget("user:".$uid,"picture");
+			//用户名
+			$username = $this->redis->hget("user:".$uid,"username");
+			//为一维JSON赋值
+			$result['pid'] = $pid;
+			$result['content'] = $content;
+			$result['timestamp'] = $timestamp;
+			$result['votes'] = $votes;
+			$result['picture'] = $picture;
+			$result['username'] = $username;
+			$results[$i] = $result;
+		}
+		return  json_encode($results);
+	}
 }
 
 ?>
