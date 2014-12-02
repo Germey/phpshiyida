@@ -22,14 +22,18 @@
 		接口地址:	http://121.42.14.158/shiyida/getPostsByCateId.php
 		接收参数:	cate_id(number)，page(number),perpage(number)
 		返回值:		JSON格式的帖子详情 
-					帖子名:title 发布时间:posttime 最后回复时间:lastreply 
+					帖子代号:tid 帖子名:title 发布时间:posttime 最后回复时间:lastreply 
 					浏览量:viewcount 用户头像:picture 用户名:username
 		4.通过分类名、页码号、每页条数获取帖子信息
 		接口地址:	http://121.42.14.158/shiyida/getPostsByCateName.php
 		接收参数: 	classification(string)，page(number),perpage(number)
 		返回值:		JSON格式的帖子详情 
-					帖子名:title 发布时间:posttime 最后回复时间:lastreply 
+					帖子代号:tid 帖子名:title 发布时间:posttime 最后回复时间:lastreply 
 					浏览量:viewcount 用户头像:picture 用户名:username
+		5.返回所有分类的代号
+		接口地址:	http://121.42.14.158/shiyida/getAllCateId.php
+		接收参数:	无参数,直接访问即可
+		返回值:		JSON格式的数组，包含了所有分类的代号
 		</pre>
 	</div>
 </body>

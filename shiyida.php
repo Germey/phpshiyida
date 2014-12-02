@@ -26,6 +26,21 @@ class Shiyida
 		echo "This is Shiyida Interface";
 	}
 	
+	//获得所有分类的代号
+	public function getAllCateIds(){
+		$categories = $this->redis->keys("category*");
+		$cate_ids = null;
+		$i=0;
+		$result = null;
+		foreach($categories as $category){
+			$id = $this->redis->hget($category,"cid");
+			if($id){
+				$result[$i] = $id;
+				$i++;
+			}
+		}
+		echo json_encode($result);
+	}
 	
 	//传入分类，返回分类的代号
 	public function getCateIdByName($classification){
@@ -120,6 +135,8 @@ class Shiyida
 		$results = null;
 		for($i=0;$i<$count;$i++){
 			//数据库查询
+			$tid = $this->redis->hget("topic:".$postsId[$i],"tid");
+			//帖子标题
 			$title = $this->redis->hget("topic:".$postsId[$i],"title");
 			//发布时间，时间戳
 			$timestamp = $this->redis->hget("topic:".$postsId[$i],"timestamp");
@@ -134,6 +151,7 @@ class Shiyida
 			//用户名
 			$username = $this->redis->hget("user:".$uid,"username");
 			//为一维JSON赋值
+			$result['tid'] = $tid;
 			$result['title'] = $title;
 			$result['posttime'] = $timestamp;
 			$result['lastreply'] = $lastposttime;
@@ -151,7 +169,7 @@ class Shiyida
 		$postsId = $this->getPostsIdByCateId($cate_id,$page,$perpage);
 		return $postsId;
 	}
-
+	
 }
 
 ?>
