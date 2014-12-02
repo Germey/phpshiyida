@@ -28,7 +28,7 @@ class Shiyida
 	
 	
 	//传入分类，返回分类的代号
-	public function getCateId($classification){
+	public function getCateIdByName($classification){
 	
 		$categories = $this->redis->keys("category*");
 		//存储分类的代号
@@ -44,6 +44,12 @@ class Shiyida
 		return $num;
 	}
     
+	//传入分类的代号，返回分类的名字
+	public function getCateNameById($cate_id){
+		$name = $this->redis->hget("category:".$cate_id,"name");
+		return $name;
+	}
+	
 	//通过分类的ID获取该分类的帖子一共有多少个
 	public function getPostsNumByCateId($id){
 		$count = count($this->redis->zRange("categories:".$id.":tid",0,-1));
@@ -100,6 +106,13 @@ class Shiyida
 		
 	}
 	
+	//传入分类的代号，页码，每页数量，获取帖子详情，返回JSON
+	public function getPostsByCateIdToPage($cate_id,$page,$perpage){
+		$classification = $this->getCateNameById($cate_id);
+		$results = $this->getPostsByCateNameToPage($classification,$page,$perpage);
+		return $results;
+	}
+	
 	//传入分类的名字，页码，每页数量，获取帖子详情，返回JSON
 	public function getPostsByCateNameToPage($classification,$page,$perpage){
 		$postsId = $this->getPostsIdByCateName($classification,$page,$perpage);
@@ -134,7 +147,7 @@ class Shiyida
 	
 	//通过传入分类的名字,页码，每页数量，来获取帖子代号数组
 	public function getPostsIdByCateName($classification,$page,$perpage){
-		$cate_id = $this->getCateId($classification);
+		$cate_id = $this->getCateIdByName($classification);
 		$postsId = $this->getPostsIdByCateId($cate_id,$page,$perpage);
 		return $postsId;
 	}

@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>接口说明</title>
+</head>
+<body>
+	<div class = "title">
+		<h1>接口说明</h1>
+	</div>
+	<div class = "content">
+		<pre>
+		1.通过分类ID获取分类名
+		接口地址: 	http://121.42.14.158/shiyida/getCateNameById.php
+		功能:		传入分类，返回分类的数据库内部代号
+		接收参数:	cate_id(number)
+		返回值:		返回分类名，不存在返回null
+		2.通过分类名获取分类ID
+		接口地址:	http://121.42.14.158/shiyida/getCateIdByName.php
+		功能:		传入分类名字，返回分类ID
+		接收参数:	classification(string)
+		返回值:		0代表未找到该分类，否则返回分类代号
+		3.通过分类ID、页码号、每页条数获取帖子信息
+		接口地址:	http://121.42.14.158/shiyida/getPostsByCateId.php
+		接收参数:	cate_id(number)，page(number),perpage(number)
+		返回值:		JSON格式的帖子详情 
+					帖子名:title 发布时间:posttime 最后回复时间:lastreply 
+					浏览量:viewcount 用户头像:picture 用户名:username
+		4.通过分类名、页码号、每页条数获取帖子信息
+		接口地址:	http://121.42.14.158/shiyida/getPostsByCateName.php
+		接收参数: 	classification(string)，page(number),perpage(number)
+		返回值:		JSON格式的帖子详情 
+					帖子名:title 发布时间:posttime 最后回复时间:lastreply 
+					浏览量:viewcount 用户头像:picture 用户名:username
+		</pre>
+	</div>
+</body>
+</html>
+<style>
+body{
+	font-size:16px;
+	font-family:"Microsoft Yahei";
+}
+.content{
+	margin:0 auto;
+	width:900px;
+}
+.title{
+	margin:50px auto;
+	width:800px;
+	text-align:center;
+}
+<style>
