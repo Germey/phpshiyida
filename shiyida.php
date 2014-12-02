@@ -100,7 +100,39 @@ class Shiyida
 		
 	}
 	
-	//通过传入分类的名字,页码，每页数量，来获取帖子的详情，返回JSON
+	//传入分类的名字，页码，每页数量，获取帖子详情，返回JSON
+	public function getPostsByCateNameToPage($classification,$page,$perpage){
+		$postsId = $this->getPostsIdByCateName($classification,$page,$perpage);
+		$count = count($postsId);
+		$results = null;
+		for($i=0;$i<$count;$i++){
+			//数据库查询
+			$title = $this->redis->hget("topic:".$postsId[$i],"title");
+			//发布时间，时间戳
+			$timestamp = $this->redis->hget("topic:".$postsId[$i],"timestamp");
+			//最后回复
+			$lastposttime = $this->redis->hget("topic:".$postsId[$i],"lastposttime");
+			//浏览量
+			$viewcount = $this->redis->hget("topic:".$postsId[$i],"viewcount");
+			//用户ID
+			$uid = $this->redis->hget("topic:".$postsId[$i],"uid");
+			//用户头像
+			$picture = $this->redis->hget("user:".$uid,"picture");
+			//用户名
+			$username = $this->redis->hget("user:".$uid,"username");
+			//为一维JSON赋值
+			$result['title'] = $title;
+			$result['posttime'] = $timestamp;
+			$result['lastreply'] = $lastposttime;
+			$result['viewcount'] = $viewcount;
+			$result['picture'] = $picture;
+			$result['username'] = $username;
+			$results[$i] = $result;
+		}
+		return  json_encode($results);
+	}
+	
+	//通过传入分类的名字,页码，每页数量，来获取帖子代号数组
 	public function getPostsIdByCateName($classification,$page,$perpage){
 		$cate_id = $this->getCateId($classification);
 		$postsId = $this->getPostsIdByCateId($cate_id,$page,$perpage);
