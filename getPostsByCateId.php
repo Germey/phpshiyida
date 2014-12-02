@@ -1,18 +1,18 @@
 <?php 
 	/*
-		´«Èë·ÖÀà£¬Ò³Âë£¬Ã¿Ò³ÊýÁ¿£¬·µ»Ø¸÷¸öÌû×ÓÏêÇé£¬JSON¸ñÊ½
-		½ÓÊÕ²ÎÊý:classification(string)£¬page(number),perpage(number)
-		·µ»ØÖµ:JSON¸ñÊ½µÄÌû×ÓÏêÇé
+		ä¼ å…¥åˆ†ç±»ï¼Œé¡µç ï¼Œæ¯é¡µæ•°é‡ï¼Œè¿”å›žå„ä¸ªå¸–å­è¯¦æƒ…ï¼ŒJSONæ ¼å¼
+		æŽ¥æ”¶å‚æ•°:classification(string)ï¼Œpage(number),perpage(number)
+		è¿”å›žå€¼:JSONæ ¼å¼çš„å¸–å­è¯¦æƒ…
 	*/
 	require("shiyida.php");
-	$classification = "À­ºäÉñÆ÷Ò»Âá¿ð£¡";
+	$classification = "æ‹‰è½°ç¥žå™¨ä¸€ç®©ç­ï¼";
 	//$classification = $_POST['classification'];
-	$page = 5;
+	$page = 3;
 	//$page = $_POST['page'];
 	$perpage = 5;
 	//$page = $_POST['perpage'];
 	$shiyida = new Shiyida();
-	$cate_id = $shiyida->getCateId($classification);
+	var_dump($shiyida->getPostsIdByCateName($classification,$page,$perpage));
 	
 	
-?>
+?> 

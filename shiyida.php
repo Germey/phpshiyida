@@ -84,25 +84,16 @@ class Shiyida
 	
 	//通过传入分类的代号,页码，每页数量，来获取帖子的代号，返回数组
 	public function getPostsIdByCateId($cate_id,$page,$perpage){
-		echo $cate_id;
-		echo $page;
-		echo $perpage;
+	
 		//通过分类的ID获取该分类的帖子一共有多少个
 		$posts_count = $this->getPostsNumByCateId($cate_id);
-		echo $posts_count;
-		$allPosts = $this->getAllPostsIdByCateId($cate_id);
-		var_dump($allPosts);
 		//返回值result保存了开始索引和结束索引，两者皆为0代表无效
 		$result = $this->getStartAndEnd($posts_count,$page,$perpage);
-		var_dump($result);
-		
 		//判断两者不是均为0
 		if(!($result[0]==0&&$result[1]==0)){
 			//返回每页帖子的代号
 			$postsId = $this->getPostsIdByCateIdAndIndex($cate_id,$result[0],$result[1]);
-			var_dump($postsId);
 			return $postsId;
-			
 		}else{
 			return null;
 		}
@@ -110,9 +101,10 @@ class Shiyida
 	}
 	
 	//通过传入分类的名字,页码，每页数量，来获取帖子的详情，返回JSON
-	public function getPostsByCateName($classification,$page,$perpage){
+	public function getPostsIdByCateName($classification,$page,$perpage){
 		$cate_id = $this->getCateId($classification);
-		$this->getPostsIdByCateId($cate_id,$page,$perpage);
+		$postsId = $this->getPostsIdByCateId($cate_id,$page,$perpage);
+		return $postsId;
 	}
 
 }
